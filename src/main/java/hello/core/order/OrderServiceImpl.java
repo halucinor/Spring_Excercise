@@ -1,40 +1,48 @@
 package hello.core.order;
 
 import hello.core.MemberRepository;
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
 import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemoryMemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-@Component()
+@Component
+//@RequiredArgsConstructor
 public class OrderServiceImpl implements orderService{
 
-    @Autowired private MemberRepository memberRepository;
-    @Autowired private DiscountPolicy discountPolicy;
-
-    //private final MemberRepository memberRepository;
-    //private final DiscountPolicy discountPolicy;
+    //@Autowired private MemberRepository memberRepository;
+    //@Autowired private DiscountPolicy discountPolicy;
 
 /*
-    @Autowired(required = false)
+    private MemberRepository memberRepository;
+    private DiscountPolicy discountPolicy;
+
+    @Autowired
     public void setMemberRepository(MemberRepository memberRepository){
         this.memberRepository = memberRepository;
     }
 
-    @Autowired(required = false)
+    @Autowired
     public void setDiscountPolicy(DiscountPolicy discountPolicy){
         this.discountPolicy = discountPolicy;
     }
 */
+
+    private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
+//    private final Object object;
+
     @Autowired // ac.getBean(MemberRepository.class)
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
-
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
